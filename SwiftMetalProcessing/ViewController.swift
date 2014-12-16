@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         
-        for(var i = 12; i<=24; ++i) {
+        for(var i = 24; i<=24; ++i) {
             
             let start0 = CACurrentMediaTime()
 

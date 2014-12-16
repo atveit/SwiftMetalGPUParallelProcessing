@@ -82,10 +82,8 @@ relativespeed = 77.1786643380491
 filling array took 280342180.000007 microseconds
 cold GPU: runtime in microsecs : 13615224.1667151
 0.5
-
-
-
-
+CPU: runtime in microsecs : 1017163137.08341
+relativespeed = 74.7077774576824
 #############################################
 ==> count = 16777216 - 2^24
 filling array took 511296174.333329 microseconds
