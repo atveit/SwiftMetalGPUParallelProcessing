@@ -57,10 +57,29 @@ class ViewController: UIViewController {
         var threadsPerGroup = MTLSize(width:32,height:1,depth:1)
         var numThreadgroups = MTLSize(width:(myvector.count+31)/32, height:1, depth:1)
         computeCommandEncoder.dispatchThreadgroups(numThreadgroups, threadsPerThreadgroup: threadsPerGroup)
-        
+
         computeCommandEncoder.endEncoding()
+
+        let start = CACurrentMediaTime()
+
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
+
+        let stop = CACurrentMediaTime()
+        let deltaMicroseconds = (stop-start) * (1.0*10e6)
+        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
+        
+        /*
+        let start2 = CACurrentMediaTime()
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        let stop2 = CACurrentMediaTime()
+        let deltaMicroseconds2 = (stop2-start2) * (1.0*10e6)
+        println("warm GPU: runtime in microsecs : \(deltaMicroseconds2)")
+
+*/
+     
+
         
         // a. Get GPU data
         // outVectorBuffer.contents() returns UnsafeMutablePointer roughly equivalent to char* in C
@@ -73,7 +92,22 @@ class ViewController: UIViewController {
         data.getBytes(&finalResultArray, length:myvector.count * sizeof(Float))
         
         // d. YOU'RE ALL SET!        exit(0)
-        println(finalResultArray)
+        println(finalResultArray[0]) // should be 0.5
+        
+        let start3 = CACurrentMediaTime()
+
+        // timing without
+        for (index, value) in enumerate(myvector) {
+            finalResultArray[index] = 1.0 / (1.0 + exp(-myvector[index]))
+        }
+        
+        let stop3 = CACurrentMediaTime()
+        let deltaMicroseconds3 = (stop3-start3) * (1.0*10e6)
+        println("CPU: runtime in microsecs : \(deltaMicroseconds3)")
+        
+        let relativeSpeed = deltaMicroseconds3/deltaMicroseconds
+        println("relativespeed = \(relativeSpeed)")
+        
         
         exit(0)
     }
