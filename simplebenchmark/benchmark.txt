@@ -1,6 +1,81 @@
+A) number of elements: 123456
+
 2014-12-16 12:22:12.307 SwiftMetalProcessing[1660:497840] Metal GPU Frame Capture Enabled
 2014-12-16 12:22:12.309 SwiftMetalProcessing[1660:497840] Metal API Validation Enabled
 cold GPU: runtime in microsecs : 185110.416787211
 0.5
 CPU: runtime in microsecs : 47843169.1665901
 relativespeed = 258.457465533055
+
+B) number of elements: 1234567
+
+filling array took 37754876.9166606 microseconds
+2014-12-16 12:48:12.529 SwiftMetalProcessing[1674:503863] Metal GPU Frame Capture Enabled
+2014-12-16 12:48:12.531 SwiftMetalProcessing[1674:503863] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 659326.249879086
+0.5
+CPU: runtime in microsecs : 483907755.833352
+relativespeed = 733.942802856849
+
+C) number of elements: 12345
+filling array took 392090.833338443 microseconds
+2014-12-16 13:00:48.332 SwiftMetalProcessing[1683:506570] Metal GPU Frame Capture Enabled
+2014-12-16 13:00:48.333 SwiftMetalProcessing[1683:506570] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 69997.0831919927
+0.5
+CPU: runtime in microsecs : 5653783.33325498
+relativespeed = 80.7716989827619
+
+D) number of elements: 1234
+filling array took 45910.2916793199 microseconds
+2014-12-16 13:01:11.848 SwiftMetalProcessing[1690:506887] Metal GPU Frame Capture Enabled
+2014-12-16 13:01:11.849 SwiftMetalProcessing[1690:506887] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 51162.0834004134
+0.5
+CPU: runtime in microsecs : 533953.750127694
+relativespeed = 10.4365130315115
+
+E) number of elements: 123
+filling array took 10645.3750049695 microseconds
+2014-12-16 13:01:33.749 SwiftMetalProcessing[1697:507169] Metal GPU Frame Capture Enabled
+2014-12-16 13:01:33.749 SwiftMetalProcessing[1697:507169] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 43723.7499863841
+0.5
+CPU: runtime in microsecs : 49662.0833291672
+relativespeed = 1.13581482248509
+
+F) number of elements: 12
+filling array took 6889.83334111981 microseconds
+2014-12-16 13:01:56.817 SwiftMetalProcessing[1704:507447] Metal GPU Frame Capture Enabled
+2014-12-16 13:01:56.818 SwiftMetalProcessing[1704:507447] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 46259.1667019296
+0.5
+CPU: runtime in microsecs : 5571.25007617287
+relativespeed = 0.1204355908975
+
+G) number of elements: 1
+filling array took 6692.37499823794 microseconds
+2014-12-16 13:02:30.052 SwiftMetalProcessing[1711:507785] Metal GPU Frame Capture Enabled
+2014-12-16 13:02:30.052 SwiftMetalProcessing[1711:507785] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 45577.9167532455
+0.5
+CPU: runtime in microsecs : 900.000013643876
+relativespeed = 0.0197464052276981
+
+H) number of elements: 10000000 (10 million)
+filling array took 305784797.541666 microseconds
+2014-12-16 13:10:26.122 SwiftMetalProcessing[1727:508964] Metal GPU Frame Capture Enabled
+2014-12-16 13:10:26.123 SwiftMetalProcessing[1727:508964] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 3179862.08334332
+0.5
+CPU: runtime in microsecs : 3908226572.91676
+relativespeed = 1229.0553711083
+
+I) number of elements: 1000000 (1 million)
+filling array took 30580217.2916738 microseconds
+2014-12-16 13:03:42.253 SwiftMetalProcessing[1719:508194] Metal GPU Frame Capture Enabled
+2014-12-16 13:03:42.254 SwiftMetalProcessing[1719:508194] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 495616.249972954
+0.5
+CPU: runtime in microsecs : 390826717.500022
+relativespeed = 788.567197950731

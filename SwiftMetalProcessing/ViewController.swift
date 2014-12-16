@@ -16,12 +16,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-    
+        let start0 = CACurrentMediaTime()
+        
         // prepare original input data – a Swift array
-        var myvector = [Float](count: 123456, repeatedValue: 0)
+        var myvector = [Float](count: 10000000, repeatedValue: 0)
         for (index, value) in enumerate(myvector) {
             myvector[index] = Float(index)
         }
+        
+        let stop0 = CACurrentMediaTime()
+        let delta0 = (stop0-start0)*1000000.0
+        println("filling array took \(delta0) microseconds")
         
         // initialize Metal
         var (device, commandQueue, defaultLibrary, commandBuffer, computeCommandEncoder) = initMetal()
