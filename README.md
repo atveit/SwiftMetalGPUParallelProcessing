@@ -7,5 +7,5 @@ Metal is an alternative to OpenGL for graphics processing, but for general data-
 
 If you want to read up on Metal I recommend having a look at https://developer.apple.com/metal/ (Metal Programming Guide, Metal Shading Language and Metal Framework Reference)
 
-See [[http://memkite.com/blog/2014/12/15/data-parallel-programming-with-metal-and-swift-for-iphoneipad-gpu/]] for a blog post describing this code.
+See http://memkite.com/blog/2014/12/15/data-parallel-programming-with-metal-and-swift-for-iphoneipad-gpu/ for a blog post describing this code.
 
