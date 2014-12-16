@@ -74,6 +74,8 @@ class ViewController: UIViewController {
         
         // d. YOU'RE ALL SET!        exit(0)
         println(finalResultArray)
+        
+        exit(0)
     }
     
     func initMetal() -> (MTLDevice, MTLCommandQueue, MTLLibrary, MTLCommandBuffer,
