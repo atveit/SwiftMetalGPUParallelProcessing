@@ -69,18 +69,6 @@ class ViewController: UIViewController {
         let deltaMicroseconds = (stop-start) * (1.0*10e6)
         println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
         
-        /*
-        let start2 = CACurrentMediaTime()
-        commandBuffer.commit()
-        commandBuffer.waitUntilCompleted()
-        let stop2 = CACurrentMediaTime()
-        let deltaMicroseconds2 = (stop2-start2) * (1.0*10e6)
-        println("warm GPU: runtime in microsecs : \(deltaMicroseconds2)")
-
-*/
-     
-
-        
         // a. Get GPU data
         // outVectorBuffer.contents() returns UnsafeMutablePointer roughly equivalent to char* in C
         var data = NSData(bytesNoCopy: outVectorBuffer.contents(),
