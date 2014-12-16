@@ -79,3 +79,51 @@ cold GPU: runtime in microsecs : 495616.249972954
 0.5
 CPU: runtime in microsecs : 390826717.500022
 relativespeed = 788.567197950731
+
+J) number of elements: 100000 (hundred thousand)
+filling array took 3021321.2499948 microseconds
+2014-12-16 13:19:05.970 SwiftMetalProcessing[1735:511510] Metal GPU Frame Capture Enabled
+2014-12-16 13:19:05.970 SwiftMetalProcessing[1735:511510] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 169442.083279137
+0.5
+CPU: runtime in microsecs : 39302068.3333452
+relativespeed = 231.949864949427
+
+K) number of elements: 10000 (ten thousand)
+filling array took 318652.583329822 microseconds
+2014-12-16 13:19:57.680 SwiftMetalProcessing[1742:511960] Metal GPU Frame Capture Enabled
+2014-12-16 13:19:57.681 SwiftMetalProcessing[1742:511960] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 61870.0000632089
+0.5
+CPU: runtime in microsecs : 4451359.16656
+relativespeed = 71.9469720706693
+++++++++++++
+
+new metrics, very conservative, from before configuring gpu to after receiving data from it
+
+N = 100000 (hundred thousand)
+filling array took 3066978.62500732 microseconds
+2014-12-16 13:34:18.780 SwiftMetalProcessing[1792:516455] Metal GPU Frame Capture Enabled
+2014-12-16 13:34:18.781 SwiftMetalProcessing[1792:516455] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 3985880.83335198
+0.5
+CPU: runtime in microsecs : 39848030.4166151
+relativespeed = 9.99729597613291
+
+N=1000000 (1 million)
+filling array took 30289064.9999899 microseconds
+2014-12-16 13:36:10.360 SwiftMetalProcessing[1800:517039] Metal GPU Frame Capture Enabled
+2014-12-16 13:36:10.361 SwiftMetalProcessing[1800:517039] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 5309011.25006494
+0.5
+CPU: runtime in microsecs : 388455886.666634
+relativespeed = 73.1691586944522
+
+N=10000000 (10 million = 10^7)
+filling array took 305068795.083338 microseconds
+2014-12-16 13:42:40.528 SwiftMetalProcessing[1807:517617] Metal GPU Frame Capture Enabled
+2014-12-16 13:42:40.529 SwiftMetalProcessing[1807:517617] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 20883388.3333136
+0.5
+CPU: runtime in microsecs : 3922125540.83337
+relativespeed = 187.810784257491

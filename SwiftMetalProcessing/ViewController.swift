@@ -29,6 +29,11 @@ class ViewController: UIViewController {
         println("filling array took \(delta0) microseconds")
         
         // initialize Metal
+        
+        // START BENCHMARK
+        
+        let start = CACurrentMediaTime()
+
         var (device, commandQueue, defaultLibrary, commandBuffer, computeCommandEncoder) = initMetal()
 
         
@@ -44,6 +49,7 @@ class ViewController: UIViewController {
         
         // calculate byte length of input data - myvector
         var myvectorByteLength = myvector.count*sizeofValue(myvector[0])
+        
         
         // create a MTLBuffer - input data that the GPU and Metal and produce
         var inVectorBuffer = device.newBufferWithBytes(&myvector, length: myvectorByteLength, options: nil)
@@ -65,14 +71,15 @@ class ViewController: UIViewController {
 
         computeCommandEncoder.endEncoding()
 
-        let start = CACurrentMediaTime()
+//        let start = CACurrentMediaTime()
 
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
 
-        let stop = CACurrentMediaTime()
-        let deltaMicroseconds = (stop-start) * (1.0*10e6)
-        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
+//        let stop = CACurrentMediaTime()
+//        let deltaMicroseconds = (stop-start) * (1.0*10e6)
+//        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
+        
         
         // a. Get GPU data
         // outVectorBuffer.contents() returns UnsafeMutablePointer roughly equivalent to char* in C
@@ -83,6 +90,19 @@ class ViewController: UIViewController {
         
         // c. get data from GPU into Swift array
         data.getBytes(&finalResultArray, length:myvector.count * sizeof(Float))
+        
+        // STOP BENCHMARK
+        
+        let stop = CACurrentMediaTime()
+        let deltaMicroseconds = (stop-start) * (1.0*10e6)
+        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
+//        let start4 = CACurrentMediaTime()
+
+        
+//        let stop4 = CACurrentMediaTime()
+//        let delta4 = (stop4-start4)*1000000.0
+//        println("getting data from GPU => CPU took \(delta4) microseconds")
+
         
         // d. YOU'RE ALL SET!        exit(0)
         println(finalResultArray[0]) // should be 0.5
