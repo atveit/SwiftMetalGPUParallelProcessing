@@ -1,0 +1,6 @@
+2014-12-16 12:22:12.307 SwiftMetalProcessing[1660:497840] Metal GPU Frame Capture Enabled
+2014-12-16 12:22:12.309 SwiftMetalProcessing[1660:497840] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 185110.416787211
+0.5
+CPU: runtime in microsecs : 47843169.1665901
+relativespeed = 258.457465533055
