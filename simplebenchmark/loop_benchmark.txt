@@ -1,0 +1,95 @@
+#############################################
+==> count = 4096 - 2^12
+filling array took 134470.000004512 microseconds
+2014-12-16 14:49:54.307 SwiftMetalProcessing[1866:530742] Metal GPU Frame Capture Enabled
+2014-12-16 14:49:54.307 SwiftMetalProcessing[1866:530742] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 2994147.08337281
+0.5
+CPU: runtime in microsecs : 520309.999992605
+relativespeed = 0.173775698222044
+#############################################
+==> count = 8192 - 2^13
+filling array took 252750.62500441 microseconds
+cold GPU: runtime in microsecs : 62489.9999820627
+0.5
+CPU: runtime in microsecs : 871565.83336764
+relativespeed = 13.9472849034696
+#############################################
+==> count = 16384 - 2^14
+filling array took 499872.416665312 microseconds
+cold GPU: runtime in microsecs : 80839.5832427777
+0.5
+CPU: runtime in microsecs : 1754669.58331526
+relativespeed = 21.7055743353554
+#############################################
+==> count = 32768 - 2^15
+filling array took 997217.166674091 microseconds
+cold GPU: runtime in microsecs : 126074.583386071
+0.5
+CPU: runtime in microsecs : 3539578.33329332
+relativespeed = 28.0752728918744
+#############################################
+==> count = 65536 - 2^16
+filling array took 1999642.37499807 microseconds
+cold GPU: runtime in microsecs : 191510.833392385
+0.5
+CPU: runtime in microsecs : 7018772.50001417
+relativespeed = 36.6494802183511
+#############################################
+==> count = 131072 - 2^17
+filling array took 4027364.74999983 microseconds
+cold GPU: runtime in microsecs : 321503.750019474
+0.5
+CPU: runtime in microsecs : 14014958.7500491
+relativespeed = 43.5918982257601
+#############################################
+==> count = 262144 - 2^18
+filling array took 8001094.87499867 microseconds
+cold GPU: runtime in microsecs : 631818.333349656
+0.5
+CPU: runtime in microsecs : 28017094.166571
+relativespeed = 44.3435916429257
+#############################################
+==> count = 524288 - 2^19
+filling array took 16034208.6250021 microseconds
+cold GPU: runtime in microsecs : 997512.500034645
+0.5
+CPU: runtime in microsecs : 57490045.8334014
+relativespeed = 57.6334089361333
+#############################################
+==> count = 1048576 - 2^20
+filling array took 31968784.4166765 microseconds
+cold GPU: runtime in microsecs : 1710485.83331867
+0.5
+CPU: runtime in microsecs : 115896939.166705
+relativespeed = 67.7567372433847
+#############################################
+==> count = 2097152 - 2^21
+filling array took 63905038.9166659 microseconds
+cold GPU: runtime in microsecs : 3361272.91666344
+0.5
+CPU: runtime in microsecs : 233171236.666676
+relativespeed = 69.3699209935423
+#############################################
+==> count = 4194304 - 2^22
+filling array took 132434033.04166 microseconds
+cold GPU: runtime in microsecs : 6487682.50001012
+0.5
+CPU: runtime in microsecs : 500710670.000117
+relativespeed = 77.1786643380491
+#############################################
+==> count = 8388608 - 2^23
+filling array took 280342180.000007 microseconds
+cold GPU: runtime in microsecs : 13615224.1667151
+0.5
+
+
+
+
+#############################################
+==> count = 16777216 - 2^24
+filling array took 511296174.333329 microseconds
+2014-12-16 14:36:11.819 SwiftMetalProcessing[1850:527166] Metal GPU Frame Capture Enabled
+2014-12-16 14:36:11.820 SwiftMetalProcessing[1850:527166] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 37954072.9167638
+0.5

@@ -16,110 +16,126 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let start0 = CACurrentMediaTime()
         
-        // prepare original input data – a Swift array
-        var myvector = [Float](count: 10000000, repeatedValue: 0)
-        for (index, value) in enumerate(myvector) {
-            myvector[index] = Float(index)
+        for(var i = 12; i<=24; ++i) {
+            
+            let start0 = CACurrentMediaTime()
+
+            let maxcount = Int(pow(2.0,Float(i)))
+            println("#############################################")
+            println("==> count = \(maxcount) - 2^\(i)")
+            // prepare original input data – a Swift array
+            var myvector = [Float](count: maxcount, repeatedValue: 0)
+            for (index, value) in enumerate(myvector) {
+                myvector[index] = Float(index)
+            }
+            
+            let stop0 = CACurrentMediaTime()
+            let delta0 = (stop0-start0)*1000000.0
+            println("filling array took \(delta0) microseconds")
+            
+            // initialize Metal
+            
+            // START BENCHMARK
+            
+            let start = CACurrentMediaTime()
+            
+            var (device, commandQueue, defaultLibrary, commandBuffer, computeCommandEncoder) = initMetal()
+            
+            
+            // set up a compute pipeline with Sigmoid function and add it to encoder
+            let sigmoidProgram = defaultLibrary.newFunctionWithName("sigmoid")
+            var pipelineErrors = NSErrorPointer()
+            var computePipelineFilter = device.newComputePipelineStateWithFunction(sigmoidProgram!, error: pipelineErrors)
+            computeCommandEncoder.setComputePipelineState(computePipelineFilter!)
+            
+            
+            computeCommandEncoder.setComputePipelineState(computePipelineFilter!)
+            
+            
+            // calculate byte length of input data - myvector
+            var myvectorByteLength = myvector.count*sizeofValue(myvector[0])
+            
+            
+            // create a MTLBuffer - input data that the GPU and Metal and produce
+            var inVectorBuffer = device.newBufferWithBytes(&myvector, length: myvectorByteLength, options: nil)
+            
+            //   set the input vector for the Sigmoid() function, e.g. inVector
+            //    atIndex: 0 here corresponds to buffer(0) in the Sigmoid function
+            computeCommandEncoder.setBuffer(inVectorBuffer, offset: 0, atIndex: 0)
+            
+            // d. create the output vector for the Sigmoid() function, e.g. outVector
+            //    atIndex: 1 here corresponds to buffer(1) in the Sigmoid function
+            var resultdata = [Float](count:myvector.count, repeatedValue: 0)
+            var outVectorBuffer = device.newBufferWithBytes(&resultdata, length: myvectorByteLength, options: nil)
+            computeCommandEncoder.setBuffer(outVectorBuffer, offset: 0, atIndex: 1)
+            
+            // hardcoded to 32 for now (recommendation: read about threadExecutionWidth)
+            var threadsPerGroup = MTLSize(width:32,height:1,depth:1)
+            var numThreadgroups = MTLSize(width:(myvector.count+31)/32, height:1, depth:1)
+            computeCommandEncoder.dispatchThreadgroups(numThreadgroups, threadsPerThreadgroup: threadsPerGroup)
+            
+            computeCommandEncoder.endEncoding()
+            
+            //        let start = CACurrentMediaTime()
+            
+            commandBuffer.commit()
+            commandBuffer.waitUntilCompleted()
+            
+            //        let stop = CACurrentMediaTime()
+            //        let deltaMicroseconds = (stop-start) * (1.0*10e6)
+            //        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
+            
+            
+            // a. Get GPU data
+            // outVectorBuffer.contents() returns UnsafeMutablePointer roughly equivalent to char* in C
+            var data = NSData(bytesNoCopy: outVectorBuffer.contents(),
+                length: myvector.count*sizeof(Float), freeWhenDone: false)
+            // b. prepare Swift array large enough to receive data from GPU
+            var finalResultArray = [Float](count: myvector.count, repeatedValue: 0)
+            
+            // c. get data from GPU into Swift array
+            data.getBytes(&finalResultArray, length:myvector.count * sizeof(Float))
+            
+            // STOP BENCHMARK
+            
+            let stop = CACurrentMediaTime()
+            let deltaMicroseconds = (stop-start) * (1.0*10e6)
+            println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
+            //        let start4 = CACurrentMediaTime()
+            
+            
+            //        let stop4 = CACurrentMediaTime()
+            //        let delta4 = (stop4-start4)*1000000.0
+            //        println("getting data from GPU => CPU took \(delta4) microseconds")
+            
+            
+            // d. YOU'RE ALL SET!        exit(0)
+            println(finalResultArray[0]) // should be 0.5
+            
+            let start3 = CACurrentMediaTime()
+            
+            // timing without
+            /*
+            for (index, value) in enumerate(myvector) {
+                finalResultArray[index] = 1.0 / (1.0 + exp(-myvector[index]))
+            }
+*/
+            var fra = NSMutableArray(capacity: myvector.count)
+            let ccount = myvector.count
+            for j in 0..<ccount {
+                fra[j] = 1.0/(1.0 + exp(-myvector[j]))
+            }
+            
+            let stop3 = CACurrentMediaTime()
+            let deltaMicroseconds3 = (stop3-start3) * (1.0*10e6)
+            println("CPU: runtime in microsecs : \(deltaMicroseconds3)")
+            
+            let relativeSpeed = deltaMicroseconds3/deltaMicroseconds
+            println("relativespeed = \(relativeSpeed)")
+
         }
         
-        let stop0 = CACurrentMediaTime()
-        let delta0 = (stop0-start0)*1000000.0
-        println("filling array took \(delta0) microseconds")
-        
-        // initialize Metal
-        
-        // START BENCHMARK
-        
-        let start = CACurrentMediaTime()
-
-        var (device, commandQueue, defaultLibrary, commandBuffer, computeCommandEncoder) = initMetal()
-
-        
-        // set up a compute pipeline with Sigmoid function and add it to encoder
-        let sigmoidProgram = defaultLibrary.newFunctionWithName("sigmoid")
-        var pipelineErrors = NSErrorPointer()
-        var computePipelineFilter = device.newComputePipelineStateWithFunction(sigmoidProgram!, error: pipelineErrors)
-        computeCommandEncoder.setComputePipelineState(computePipelineFilter!)
-        
-      
-        computeCommandEncoder.setComputePipelineState(computePipelineFilter!)
-        
-        
-        // calculate byte length of input data - myvector
-        var myvectorByteLength = myvector.count*sizeofValue(myvector[0])
-        
-        
-        // create a MTLBuffer - input data that the GPU and Metal and produce
-        var inVectorBuffer = device.newBufferWithBytes(&myvector, length: myvectorByteLength, options: nil)
-        
-        //   set the input vector for the Sigmoid() function, e.g. inVector
-        //    atIndex: 0 here corresponds to buffer(0) in the Sigmoid function
-        computeCommandEncoder.setBuffer(inVectorBuffer, offset: 0, atIndex: 0)
-        
-        // d. create the output vector for the Sigmoid() function, e.g. outVector
-        //    atIndex: 1 here corresponds to buffer(1) in the Sigmoid function
-        var resultdata = [Float](count:myvector.count, repeatedValue: 0)
-        var outVectorBuffer = device.newBufferWithBytes(&resultdata, length: myvectorByteLength, options: nil)
-        computeCommandEncoder.setBuffer(outVectorBuffer, offset: 0, atIndex: 1)
-        
-        // hardcoded to 32 for now (recommendation: read about threadExecutionWidth)
-        var threadsPerGroup = MTLSize(width:32,height:1,depth:1)
-        var numThreadgroups = MTLSize(width:(myvector.count+31)/32, height:1, depth:1)
-        computeCommandEncoder.dispatchThreadgroups(numThreadgroups, threadsPerThreadgroup: threadsPerGroup)
-
-        computeCommandEncoder.endEncoding()
-
-//        let start = CACurrentMediaTime()
-
-        commandBuffer.commit()
-        commandBuffer.waitUntilCompleted()
-
-//        let stop = CACurrentMediaTime()
-//        let deltaMicroseconds = (stop-start) * (1.0*10e6)
-//        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
-        
-        
-        // a. Get GPU data
-        // outVectorBuffer.contents() returns UnsafeMutablePointer roughly equivalent to char* in C
-        var data = NSData(bytesNoCopy: outVectorBuffer.contents(),
-            length: myvector.count*sizeof(Float), freeWhenDone: false)
-        // b. prepare Swift array large enough to receive data from GPU
-        var finalResultArray = [Float](count: myvector.count, repeatedValue: 0)
-        
-        // c. get data from GPU into Swift array
-        data.getBytes(&finalResultArray, length:myvector.count * sizeof(Float))
-        
-        // STOP BENCHMARK
-        
-        let stop = CACurrentMediaTime()
-        let deltaMicroseconds = (stop-start) * (1.0*10e6)
-        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
-//        let start4 = CACurrentMediaTime()
-
-        
-//        let stop4 = CACurrentMediaTime()
-//        let delta4 = (stop4-start4)*1000000.0
-//        println("getting data from GPU => CPU took \(delta4) microseconds")
-
-        
-        // d. YOU'RE ALL SET!        exit(0)
-        println(finalResultArray[0]) // should be 0.5
-        
-        let start3 = CACurrentMediaTime()
-
-        // timing without
-        for (index, value) in enumerate(myvector) {
-            finalResultArray[index] = 1.0 / (1.0 + exp(-myvector[index]))
-        }
-        
-        let stop3 = CACurrentMediaTime()
-        let deltaMicroseconds3 = (stop3-start3) * (1.0*10e6)
-        println("CPU: runtime in microsecs : \(deltaMicroseconds3)")
-        
-        let relativeSpeed = deltaMicroseconds3/deltaMicroseconds
-        println("relativespeed = \(relativeSpeed)")
         
         
         exit(0)
