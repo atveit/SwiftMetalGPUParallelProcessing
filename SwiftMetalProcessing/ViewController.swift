@@ -9,6 +9,7 @@ import UIKit
 import Metal
 import QuartzCore
 import Darwin
+import Accelerate
 
 class ViewController: UIViewController {
     
@@ -17,7 +18,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         
-        for(var i = 24; i<=24; ++i) {
+        for(var i = 5; i<23; ++i) {
             
             let start0 = CACurrentMediaTime()
 
@@ -33,6 +34,34 @@ class ViewController: UIViewController {
             let stop0 = CACurrentMediaTime()
             let delta0 = (stop0-start0)*1000000.0
             println("filling array took \(delta0) microseconds")
+            
+            var mynegativeVector = [Float](count: maxcount, repeatedValue: 0)
+            for(index, value) in enumerate(mynegativeVector) {
+                mynegativeVector[index] = Float(-index)
+            }
+            
+            // calculate exp(-x)
+            var expMinusX = [Float](count: maxcount, repeatedValue:0)
+            var oneVec = [Float](count:maxcount, repeatedValue:1.0)
+            var negOneVec = [Float](count:maxcount, repeatedValue:-1.0)
+            
+            //println(oneVec)
+            //println(negOneVec)
+            // oneVec contains 1+exp(-x)
+            var finalResultVector = [Float](count:maxcount, repeatedValue:0)
+            var localcount:Int32 = Int32(mynegativeVector.count)
+            
+            let start5 = CACurrentMediaTime()
+            
+            // calculation
+            vvexpf(&expMinusX, &mynegativeVector, &localcount)
+            cblas_saxpy(Int32(oneVec.count), 1.0, &expMinusX, 1, &oneVec, 1)
+            vvpowf(&finalResultVector, &negOneVec, &oneVec, &localcount)
+            assert(finalResultVector[0] == 0.5)
+
+            let stop5 = CACurrentMediaTime()
+            let delta5 = (stop0-start0)*1000000.0
+            println("Accelerate approach took \(delta5) microseconds")
             
             // initialize Metal
             
@@ -96,22 +125,13 @@ class ViewController: UIViewController {
             
             // c. get data from GPU into Swift array
             data.getBytes(&finalResultArray, length:myvector.count * sizeof(Float))
+            assert(finalResultVector[0] == 0.5)
             
             // STOP BENCHMARK
             
             let stop = CACurrentMediaTime()
             let deltaMicroseconds = (stop-start) * (1.0*10e6)
             println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
-            //        let start4 = CACurrentMediaTime()
-            
-            
-            //        let stop4 = CACurrentMediaTime()
-            //        let delta4 = (stop4-start4)*1000000.0
-            //        println("getting data from GPU => CPU took \(delta4) microseconds")
-            
-            
-            // d. YOU'RE ALL SET!        exit(0)
-            println(finalResultArray[0]) // should be 0.5
             
             let start3 = CACurrentMediaTime()
             
@@ -132,7 +152,10 @@ class ViewController: UIViewController {
             println("CPU: runtime in microsecs : \(deltaMicroseconds3)")
             
             let relativeSpeed = deltaMicroseconds3/deltaMicroseconds
-            println("relativespeed = \(relativeSpeed)")
+            println("Metal was \(relativeSpeed) times faster than CPU")
+            
+            let relativeToAccelerate = delta5/deltaMicroseconds
+            println("Metal was \(relativeToAccelerate) times faster than Accelerate Framework")
 
         }
         

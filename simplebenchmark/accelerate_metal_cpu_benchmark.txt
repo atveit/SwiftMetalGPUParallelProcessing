@@ -1,0 +1,147 @@
+#############################################
+==> count = 32 - 2^5
+filling array took 13550.1666809432 microseconds
+Accelerate approach took 13550.1666809432 microseconds
+2014-12-17 09:57:56.348 SwiftMetalProcessing[2321:687860] Metal GPU Frame Capture Enabled
+2014-12-17 09:57:56.349 SwiftMetalProcessing[2321:687860] Metal API Validation Enabled
+cold GPU: runtime in microsecs : 3536931.66689482
+CPU: runtime in microsecs : 21856.6667172126
+Metal was 0.00617955583416778 times faster than CPU
+Metal was 0.00383105130578882 times faster than Accelerate Framework
+#############################################
+==> count = 64 - 2^6
+filling array took 2996.79167801514 microseconds
+Accelerate approach took 2996.79167801514 microseconds
+cold GPU: runtime in microsecs : 41439.1668164171
+CPU: runtime in microsecs : 8325.83318697289
+Metal was 0.200917002599444 times faster than CPU
+Metal was 0.0723178555035014 times faster than Accelerate Framework
+#############################################
+==> count = 128 - 2^7
+filling array took 4736.54165398329 microseconds
+Accelerate approach took 4736.54165398329 microseconds
+cold GPU: runtime in microsecs : 33519.5835214108
+CPU: runtime in microsecs : 15182.5000648387
+Metal was 0.452944173818293 times faster than CPU
+Metal was 0.141306697649086 times faster than Accelerate Framework
+#############################################
+==> count = 256 - 2^8
+filling array took 8523.58335396275 microseconds
+Accelerate approach took 8523.58335396275 microseconds
+cold GPU: runtime in microsecs : 36756.2499013729
+CPU: runtime in microsecs : 31315.4165633023
+Metal was 0.851975287123417 times faster than CPU
+Metal was 0.231894803654721 times faster than Accelerate Framework
+#############################################
+==> count = 512 - 2^9
+filling array took 16697.1249855123 microseconds
+Accelerate approach took 16697.1249855123 microseconds
+cold GPU: runtime in microsecs : 39031.6665288992
+CPU: runtime in microsecs : 55970.4165789299
+Metal was 1.43397455339216 times faster than CPU
+Metal was 0.427784065360102 times faster than Accelerate Framework
+#############################################
+==> count = 1024 - 2^10
+filling array took 32786.5833241958 microseconds
+Accelerate approach took 32786.5833241958 microseconds
+cold GPU: runtime in microsecs : 45149.1665444337
+CPU: runtime in microsecs : 112370.416463818
+Metal was 2.48887022871682 times faster than CPU
+Metal was 0.726183578426167 times faster than Accelerate Framework
+#############################################
+==> count = 2048 - 2^11
+filling array took 64416.1249801982 microseconds
+Accelerate approach took 64416.1249801982 microseconds
+cold GPU: runtime in microsecs : 45887.500164099
+CPU: runtime in microsecs : 220804.583223071
+Metal was 4.81186777299805 times faster than CPU
+Metal was 1.4037837047091 times faster than Accelerate Framework
+#############################################
+==> count = 4096 - 2^12
+filling array took 125048.66666859 microseconds
+Accelerate approach took 125048.66666859 microseconds
+cold GPU: runtime in microsecs : 52858.7499866262
+CPU: runtime in microsecs : 439140.416565351
+Metal was 8.30780933481132 times faster than CPU
+Metal was 2.36571365573777 times faster than Accelerate Framework
+#############################################
+==> count = 8192 - 2^13
+filling array took 250193.708343431 microseconds
+Accelerate approach took 250193.708343431 microseconds
+cold GPU: runtime in microsecs : 68176.6666821204
+CPU: runtime in microsecs : 872196.666896343
+Metal was 12.7931843743995 times faster than CPU
+Metal was 3.66978499418256 times faster than Accelerate Framework
+#############################################
+==> count = 16384 - 2^14
+filling array took 500049.624999519 microseconds
+Accelerate approach took 500049.624999519 microseconds
+cold GPU: runtime in microsecs : 90087.4999933876
+CPU: runtime in microsecs : 1745251.66657986
+Metal was 19.3728504699094 times faster than CPU
+Metal was 5.55071042082667 times faster than Accelerate Framework
+#############################################
+==> count = 32768 - 2^15
+filling array took 1005838.62498752 microseconds
+Accelerate approach took 1005838.62498752 microseconds
+cold GPU: runtime in microsecs : 116369.583120104
+CPU: runtime in microsecs : 3494683.33326513
+Metal was 30.0309001679442 times faster than CPU
+Metal was 8.64348395877127 times faster than Accelerate Framework
+#############################################
+==> count = 65536 - 2^16
+filling array took 1997907.37501462 microseconds
+Accelerate approach took 1997907.37501462 microseconds
+cold GPU: runtime in microsecs : 235795.833577868
+CPU: runtime in microsecs : 6966099.16660236
+Metal was 29.5429272896882 times faster than CPU
+Metal was 8.47303934382218 times faster than Accelerate Framework
+#############################################
+==> count = 131072 - 2^17
+filling array took 3995306.41667661 microseconds
+Accelerate approach took 3995306.41667661 microseconds
+cold GPU: runtime in microsecs : 423624.583345372
+CPU: runtime in microsecs : 13980710.4167994
+Metal was 33.0025946709548 times faster than CPU
+Metal was 9.4312430716971 times faster than Accelerate Framework
+#############################################
+==> count = 262144 - 2^18
+filling array took 7995071.99999061 microseconds
+Accelerate approach took 7995071.99999061 microseconds
+cold GPU: runtime in microsecs : 592910.83336575
+CPU: runtime in microsecs : 28068359.1665002
+Metal was 47.3399330674493 times faster than CPU
+Metal was 13.4844424322716 times faster than Accelerate Framework
+#############################################
+==> count = 524288 - 2^19
+filling array took 16004321.7083148 microseconds
+Accelerate approach took 16004321.7083148 microseconds
+cold GPU: runtime in microsecs : 1100254.58328892
+CPU: runtime in microsecs : 57159315.0001718
+Metal was 51.9509901329467 times faster than CPU
+Metal was 14.5460168504586 times faster than Accelerate Framework
+#############################################
+==> count = 1048576 - 2^20
+filling array took 31964094.5833526 microseconds
+Accelerate approach took 31964094.5833526 microseconds
+cold GPU: runtime in microsecs : 1919497.50005733
+CPU: runtime in microsecs : 117858820.833499
+Metal was 61.4008722751545 times faster than CPU
+Metal was 16.6523241537943 times faster than Accelerate Framework
+#############################################
+==> count = 2097152 - 2^21
+filling array took 63943138.4583295 microseconds
+Accelerate approach took 63943138.4583295 microseconds
+cold GPU: runtime in microsecs : 3291106.24996247
+CPU: runtime in microsecs : 233642984.166509
+Metal was 70.9922337418225 times faster than CPU
+Metal was 19.4290714433965 times faster than Accelerate Framework
+#############################################
+==> count = 4194304 - 2^22
+filling array took 128008848.416677 microseconds
+Accelerate approach took 128008848.416677 microseconds
+cold GPU: runtime in microsecs : 6850174.58337825
+CPU: runtime in microsecs : 467631814.999913
+Metal was 68.265678386447 times faster than CPU
+Metal was 18.6869468593234 times faster than Accelerate Framework
+
