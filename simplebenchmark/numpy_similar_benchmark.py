@@ -1,4 +1,4 @@
-data = range(1000000)
+data = range(2**22)
 import numpy
 import time
 from numpy import exp as ef

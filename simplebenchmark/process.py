@@ -2,7 +2,7 @@
 import re
 import sys
 
-lines = file('foo').readlines()
+#lines = file(sys.stdin).readlines()
 
 record = []
 
@@ -11,7 +11,7 @@ header = ["vectorsize as 2^x", "array filltime (microsec)", "accelerate time (mi
 
 print "\t".join(header)
 
-for line in lines:
+for line in sys.stdin:
     if "2014-12" in line: # skip noise
         continue
     res = re.findall(r'((\d+).(\d+))', line)
