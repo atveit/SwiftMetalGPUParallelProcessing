@@ -66,8 +66,8 @@ class ViewController: UIViewController {
             // initialize Metal
             
             // START BENCHMARK
-            
-            let start = CACurrentMediaTime()
+//            let start = CACurrentMediaTime()
+
             
             var (device, commandQueue, defaultLibrary, commandBuffer, computeCommandEncoder) = initMetal()
             
@@ -108,8 +108,13 @@ class ViewController: UIViewController {
             
             //        let start = CACurrentMediaTime()
             
+            let start = CACurrentMediaTime()
+
             commandBuffer.commit()
             commandBuffer.waitUntilCompleted()
+            
+            let stop = CACurrentMediaTime()
+
             
             //        let stop = CACurrentMediaTime()
             //        let deltaMicroseconds = (stop-start) * (1.0*10e6)
@@ -129,7 +134,6 @@ class ViewController: UIViewController {
             
             // STOP BENCHMARK
             
-            let stop = CACurrentMediaTime()
             let deltaMicroseconds = (stop-start) * (1.0*10e6)
             println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
             
