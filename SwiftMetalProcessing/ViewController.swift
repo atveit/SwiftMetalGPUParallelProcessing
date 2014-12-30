@@ -18,15 +18,46 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         
-        for(var i = 5; i<23; ++i) {
+        for(var i = 25; i<26; ++i) {
             
             let start0 = CACurrentMediaTime()
 
             let maxcount = Int(pow(2.0,Float(i)))
             println("#############################################")
             println("==> count = \(maxcount) - 2^\(i)")
+            
+            // NEW APPROACH FOR ALLOCATION
+            
+            // new way of prepping data
+            var memory:UnsafeMutablePointer<Void> = nil
+            //var memory:AutoreleasingUnsafeMutablePointer<Void> = nil
+            var alignment:UInt = 0x4000 // 16K aligned
+            var size:UInt = UInt(maxcount)*UInt(sizeof(Float))
+            posix_memalign(&memory, alignment, size)
+            
+            var outmemory:UnsafeMutablePointer<Void> = nil
+            posix_memalign(&outmemory, alignment, size)
+            
+//            var myvectorPtr = unsafeBitCast(memory, UnsafePointer<Float>.self)
+            var pptr = COpaquePointer(memory)
+            var nps = UnsafeMutablePointer<Float>(pptr)
+            nps.memory = 1234.47
+            var yoda = UnsafeMutableBufferPointer<Float>(start: nps, count: maxcount)
+            
+            for index in yoda.startIndex..<yoda.endIndex {
+                yoda[index] = Float(index)
+            }
+            
+            /*
+            // PREVIOUS APPROACH
+            var myvector = Array(yoda)
+
+            
+            println(myvector)
+            
+            println("after")
             // prepare original input data – a Swift array
-            var myvector = [Float](count: maxcount, repeatedValue: 0)
+            //var myvector = [Float](count: maxcount, repeatedValue: 0)
             for (index, value) in enumerate(myvector) {
                 myvector[index] = Float(index)
             }
@@ -39,7 +70,7 @@ class ViewController: UIViewController {
             for(index, value) in enumerate(mynegativeVector) {
                 mynegativeVector[index] = Float(-index)
             }
-            
+
             // calculate exp(-x)
             var expMinusX = [Float](count: maxcount, repeatedValue:0)
             var oneVec = [Float](count:maxcount, repeatedValue:1.0)
@@ -62,6 +93,9 @@ class ViewController: UIViewController {
             let stop5 = CACurrentMediaTime()
             let delta5 = (stop0-start0)*1000000.0
             println("Accelerate approach took \(delta5) microseconds")
+
+            */
+
             
             // initialize Metal
             
@@ -83,25 +117,30 @@ class ViewController: UIViewController {
             
             
             // calculate byte length of input data - myvector
-            var myvectorByteLength = myvector.count*sizeofValue(myvector[0])
+           // var myvectorByteLength = myvector.count*sizeofValue(myvector[0])
             
             
             // create a MTLBuffer - input data that the GPU and Metal and produce
-            var inVectorBuffer = device.newBufferWithBytes(&myvector, length: myvectorByteLength, options: nil)
+            //var inVectorBuffer = device.newBufferWithBytes(&myvector, length: myvectorByteLength, options: nil)
+            
+            var inVectorBufferNoCopy = device.newBufferWithBytesNoCopy(memory, length: Int(size), options: nil, deallocator: nil)
             
             //   set the input vector for the Sigmoid() function, e.g. inVector
             //    atIndex: 0 here corresponds to buffer(0) in the Sigmoid function
-            computeCommandEncoder.setBuffer(inVectorBuffer, offset: 0, atIndex: 0)
+            computeCommandEncoder.setBuffer(inVectorBufferNoCopy, offset: 0, atIndex: 0)
             
             // d. create the output vector for the Sigmoid() function, e.g. outVector
             //    atIndex: 1 here corresponds to buffer(1) in the Sigmoid function
-            var resultdata = [Float](count:myvector.count, repeatedValue: 0)
-            var outVectorBuffer = device.newBufferWithBytes(&resultdata, length: myvectorByteLength, options: nil)
-            computeCommandEncoder.setBuffer(outVectorBuffer, offset: 0, atIndex: 1)
+          //  var resultdata = [Float](count:myvector.count, repeatedValue: 0)
+          //  var outVectorBuffer = device.newBufferWithBytes(&resultdata, length: myvectorByteLength, options: nil)
+            
+            var outVectorBufferNoCopy = device.newBufferWithBytesNoCopy(outmemory, length: Int(size), options: nil, deallocator: nil)
+            
+            computeCommandEncoder.setBuffer(outVectorBufferNoCopy, offset: 0, atIndex: 1)
             
             // hardcoded to 32 for now (recommendation: read about threadExecutionWidth)
             var threadsPerGroup = MTLSize(width:32,height:1,depth:1)
-            var numThreadgroups = MTLSize(width:(myvector.count+31)/32, height:1, depth:1)
+            var numThreadgroups = MTLSize(width:(Int(maxcount)+31)/32, height:1, depth:1)
             computeCommandEncoder.dispatchThreadgroups(numThreadgroups, threadsPerThreadgroup: threadsPerGroup)
             
             computeCommandEncoder.endEncoding()
@@ -115,12 +154,22 @@ class ViewController: UIViewController {
             
             let stop = CACurrentMediaTime()
 
+            var memptr = COpaquePointer(outmemory)
+            var memptrfloat = UnsafeMutablePointer<Float>(memptr)
+            var yoda2 = UnsafeMutableBufferPointer<Float>(start: memptrfloat, count: maxcount)
+            
+            println(memptrfloat.memory)
+//            var r = Array(yoda2)
+//
+//            println("r = ")
+//            println(r)
+
             
             //        let stop = CACurrentMediaTime()
             //        let deltaMicroseconds = (stop-start) * (1.0*10e6)
             //        println("cold GPU: runtime in microsecs : \(deltaMicroseconds)")
             
-            
+            /*
             // a. Get GPU data
             // outVectorBuffer.contents() returns UnsafeMutablePointer roughly equivalent to char* in C
             var data = NSData(bytesNoCopy: outVectorBuffer.contents(),
@@ -131,6 +180,8 @@ class ViewController: UIViewController {
             // c. get data from GPU into Swift array
             data.getBytes(&finalResultArray, length:myvector.count * sizeof(Float))
             assert(finalResultVector[0] == 0.5)
+
+*/
             
             // STOP BENCHMARK
             
@@ -144,7 +195,7 @@ class ViewController: UIViewController {
             for (index, value) in enumerate(myvector) {
                 finalResultArray[index] = 1.0 / (1.0 + exp(-myvector[index]))
             }
-*/
+
             var fra = NSMutableArray(capacity: myvector.count)
             let ccount = myvector.count
             for j in 0..<ccount {
@@ -160,6 +211,8 @@ class ViewController: UIViewController {
             
             let relativeToAccelerate = delta5/deltaMicroseconds
             println("Metal was \(relativeToAccelerate) times faster than Accelerate Framework")
+            */
+
 
         }
         
